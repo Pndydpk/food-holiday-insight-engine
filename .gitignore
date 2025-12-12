@@ -4,16 +4,14 @@ __pycache__/
 *$py.class
 
 # Virtual environments
-.env/
+.venv/
+env/
 venv/
 ENV/
-env/
 
 # IDEs
 .vscode/
 .idea/
-*.sublime-project
-*.sublime-workspace
 
 # OS files
 .DS_Store
@@ -22,19 +20,26 @@ Thumbs.db
 # Logs
 *.log
 
-# Jupyter Notebook checkpoints
+# Jupyter checkpoints
 .ipynb_checkpoints/
 
-# Data files
-data/
-*.csv
-*.json
-*.xlsx
+# ===== PROJECT DATA RULES =====
 
-# API keys / secrets
+# Ignore entire data directory EXCEPT specific small files
+data/raw/*
+data/processed/*
+
+# Allow only this CSV (your static holiday list)
+!data/raw/food_holidays_static.csv
+
+# Ignore all other CSVs
+*.csv
+!data/raw/food_holidays_static.csv   # keep this one
+
+# Secrets
 *.env
 config.json
 
-# Streamlit temp/cache
+# Cache directories
 .streamlit/
 .cache/
