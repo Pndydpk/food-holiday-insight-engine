@@ -1,70 +1,56 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pathlib import Path
 import pandas as pd
 from datetime import date
+from pathlib import Path
 
-# -------------------------------------------------
-# App initialization (THIS WAS MISSING)
-# -------------------------------------------------
-app = FastAPI(title="Food Holiday Insight Engine")
-
-# -------------------------------------------------
-# CORS (frontend ↔ backend)
-# -------------------------------------------------
-@app.get("/")
-def root():
-    return {
-        "status": "Food Holiday Insight Engine API is running",
-        "endpoints": ["/holidays/upcoming"]
-    }
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# -------------------------------------------------
-# Paths
-# -------------------------------------------------
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-HOLIDAYS_CSV = PROJECT_ROOT / "data" / "raw" / "food_holidays_static.csv"
+# 1. Setup absolute paths relative to this script
+# This moves up from src/api to the project root
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+HOLIDAYS_CSV = ROOT_DIR / "data" / "raw" / "food_holidays_static.csv"
+POPULARITY_CSV = ROOT_DIR / "data" / "processed" / "holiday_popularity.csv"
 
-# -------------------------------------------------
-# Health check
-# -------------------------------------------------
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-# -------------------------------------------------
-# Upcoming holidays (date-aware)
-# -------------------------------------------------
 @app.get("/holidays/upcoming")
 def upcoming_holidays(
     days: int = 10,
     base_date: str | None = Query(default=None),
 ):
-    df = pd.read_csv(HOLIDAYS_CSV, parse_dates=["date"])
+    # 2. Load datasets using the absolute paths
+    try:
+        df_holidays = pd.read_csv(HOLIDAYS_CSV, parse_dates=["date"])
+        df_pop = pd.read_csv(POPULARITY_CSV)
+    except FileNotFoundError as e:
+        return {"error": f"File not found: {e.filename}. Check your directory structure!"}
 
+    # 3. Merge logic
+    df = pd.merge(df_holidays, df_pop, left_on="name", right_on="holiday_name", how="left")
+    df["popularity_score"] = df["popularity_score"].fillna(0)
+
+    # 4. Date handling
     if base_date:
-        today = pd.to_datetime(base_date)
+        requested_date = pd.to_datetime(base_date)
     else:
-        today = pd.to_datetime(date.today())
+        requested_date = pd.to_datetime(date.today())
 
-    df["days_from_today"] = (df["date"] - today).dt.days
+    # Logic to handle 2025 static data
+    search_date = requested_date.replace(year=2025)
+    df["days_from_today"] = (df["date"] - search_date).dt.days
 
+    # 5. Filter and Sort
     upcoming = df[
-        (df["days_from_today"] >= 0)
-        & (df["days_from_today"] <= days)
+        (df["days_from_today"] >= 0) & 
+        (df["days_from_today"] <= days)
     ].sort_values("date")
 
-    return upcoming[["name", "date", "days_from_today"]].rename(
+    return upcoming[["name", "date", "days_from_today", "popularity_score"]].rename(
         columns={"name": "holiday_name"}
     ).to_dict(orient="records")
