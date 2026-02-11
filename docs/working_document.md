@@ -1,10 +1,13 @@
-✅ Setup Completed (till now) — UPDATED
+FOODLENS
+A decision intelligence engine for food merchants that detects early food trends from social buzz and converts them into actionable campaign recommendations (what to promote, when, where, and with what risk).
+
+✅ Setup Completed (till now) — REGULARIZED
 
 Created GitHub repository for project.
 
 Added README.md, LICENSE, and .gitignore.
 
-Finalized project vision: Food Holiday Insight Engine (data → insights → dashboard → mobile app).
+Finalized project vision: FoodLens — Food Holiday Insight Engine (data → inference engine → insights → dashboard → merchants).
 
 Agreed on project-first, learn-along-the-way approach.
 
@@ -14,284 +17,207 @@ Took an engineering decision to switch from unreliable scraping to static, autho
 
 Built full data engineering pipeline handling millions of records.
 
+Updated core product goal: Shifted focus from “dashboard-first” to “inference engine-first (decision intelligence for merchants).”
+
 📅 Learning & Project Timeline — REALIGNED STATUS
-Phase 1: Data Collection (09/14/2025 – 09/27/2025)
+Phase 1: Data Collection (09/06/2025 – 09/27/2025)
 
- Learn Python basics for scraping (requests, BeautifulSoup, Selenium).
+Learn Python basics for scraping (requests, BeautifulSoup, Selenium).
 
- Attempt real-world scraping (Playwright, Selenium).
+Attempt real-world scraping (Playwright, Selenium).
 
- Evaluate scraping reliability & failures.
+Evaluate scraping reliability & failures.
 
- Switch to static curated dataset for food holidays.
+Switch to static curated dataset for food holidays.
 
- Load Uber Eats menu dataset (millions of rows).
+Load Uber Eats menu dataset (millions of rows).
 
-✅ Phase 1 effectively completed (with real-world tradeoff decision).
+✅ Phase 1 completed (with real-world tradeoff decision).
 
 Phase 2: Data Storage (09/28/2025 – 10/11/2025)
 
- Use SQL (SQLite) for structured storage.
+Use SQL (SQLite) for structured storage.
 
- Store Uber Eats menus in relational DB.
+Store Uber Eats menus in relational DB.
 
- Store food holidays in separate DB.
+Store food holidays in separate DB.
 
- Migrate to PostgreSQL (planned later).
+Migrate to PostgreSQL (planned later).
 
- Optional NoSQL (MongoDB) later.
+Optional NoSQL (MongoDB) later.
 
-🟡 Phase 2 partially complete (SQLite now, Postgres later).
+🟡 Phase 2 partially complete (SQLite done, Postgres later).
 
-Phase 3: Data Processing (10/12/2025 – 10/25/2025)
+Phase 3: Data Processing (10/12/2025 – 12/16/2025)
 
- Pandas & NumPy for large-scale processing.
+Pandas & NumPy for large-scale processing.
 
- Built ETL-style scripts.
+Built ETL-style scripts.
 
- Implemented chunk-based processing.
+Implemented chunk-based processing.
 
- Generated ~76M holiday–menu matches.
+Generated ~76M holiday–menu matches.
 
- Analytics aggregation (Phase 2 analytics).
+Analytics aggregation (holiday popularity, top dishes per holiday).
 
-🟡 Phase 3 processing done, analytics starting now.
+🟡 Phase 3 processing done, analytics foundation complete.
 
-Phase 4: API Development (10/26/2025 – 11/08/2025)
+Phase 4: API Development (12/17/2025 – 12/21/2025)
 
- FastAPI / Flask backend.
+FastAPI backend.
 
- Serve analytics results via API.
+Serve analytics results via API.
 
-⏳ Not started yet.
+Connected backend to React frontend.
 
-Phase 5: Frontend + Dashboard (11/09/2025 – 11/22/2025)
+✅ Phase 4 completed (API + frontend integration MVP).
 
- Interactive dashboard (filters, KPIs).
+Phase 5: Frontend + Dashboard (12/19/2025 – 12/21/2025)
 
- React-based web UI.
+Interactive dashboard (filters, KPIs).
 
-⏳ Not started yet.
+React-based web UI.
 
-Phase 6: AI/ML Integration (11/23/2025 – 12/06/2025)
+🟡 Phase 5 MVP completed (basic UI + real data flow).
 
- Popularity prediction.
+Phase 6: Intelligence Layer (Jan 2026 – Feb 2026)
 
- Recommendation engine.
+Pivoted focus to Inference Engine (decision intelligence).
+
+Built Baseline, Momentum, Confidence, Action Window services.
+
+Implemented /pulse/trends API (mock social pipeline).
+
+✅ Phase 6 Inference Engine v1 completed.
+
+Phase 7: Deployment (Planned)
+
+Docker.
+
+Cloud deployment.
+
+Monitoring.
 
 ⏳ Planned.
 
-Phase 7: Deployment (12/07/2025 – 12/20/2025)
+🧾 Daily Log — REGULARIZED
+Date: 2025-09-06
 
- Docker.
-
- Cloud deployment.
-
-⏳ Planned.
-
-🧾 Daily Log — POPULATED (Important Part)
-Daily Progress Logs
-
- Date: 09/06/2025
-
-What I learnt today: How to properly structure a GitHub project for a long-term data engineering project.
-
-What I built/tested today: Created repo with README, LICENSE, .gitignore.
-
+Learnt: How to properly structure a GitHub project for a long-term data engineering project.
+Built: Created repo with README, LICENSE, .gitignore.
 Blockers: None.
+Next: Start data sourcing via web scraping.
 
-Next Steps: Start data sourcing via web scraping.
+Date: 2025-09-13
 
- Date: 09/13/2025
+Learnt: How modern websites load data via APIs (Playwright basics).
+Built: Ran Playwright scraper; captured JSON endpoints.
+Blockers: Data persistence unclear; scraping complexity high.
+Next: Improve scraping reliability.
 
-What I learnt today: Basics of Playwright scraping and how modern websites load data via APIs.
+Date: 2025-09-24
 
-What I built/tested today: Ran Playwright scraper and captured JSON endpoints.
-
-Blockers: Data not persisted; scraping complexity higher than expected.
-
-Next Steps: Decide storage format and improve scraping reliability.
-
- Date: 09/24/2025
-
-What I learnt today: Importance of documentation and planning for complex projects.
-
-What I built/tested today: Drafted working_document.md and roadmap.
-
+Learnt: Importance of documentation and planning.
+Built: Drafted working_document.md and roadmap.
 Blockers: None.
+Next: Finalize repo structure and data flow.
 
-Next Steps: Finalize repo structure and data flow.
+Date: 2025-10-15
 
- Date: 10/15/2025
+Learnt: Limitations of scraping at scale (SSL, JS-heavy pages, blocking).
+Built: Tried Requests, Selenium, BeautifulSoup.
+Blockers: Incomplete/zero data.
+Next: Explore alternative data sources.
 
-What I learnt today: Limitations of web scraping at scale (SSL issues, JS-heavy pages, blocking).
+Date: 2025-11-06
 
-What I built/tested today: Multiple scraping attempts using Requests, Selenium, BeautifulSoup.
+Learnt: When curated datasets beat scraping in production.
+Built: Loaded static food holidays CSV; wrote loader.
+Blockers: Encoding issues.
+Next: Normalize holiday dataset.
 
-Blockers: Scrapers returned incomplete or zero data.
+Date: 2025-11-20
 
-Next Steps: Explore alternative data sources.
+Learnt: Pandas cleaning pitfalls.
+Built: Fixed loader; validated schema.
+Blockers: .str misuse.
+Next: Generate holiday keywords.
 
- Date: 11/06/2025
+Date: 2025-11-27
 
-What I learnt today: When to replace scraping with curated datasets in real projects.
+Learnt: Keyword engineering for NLP-style matching.
+Built: generate_holiday_keywords.py.
+Next: Holiday-to-menu matching.
 
-What I built/tested today: Loaded static food holidays CSV; built load_holidays_static.py.
+Date: 2025-12-04
 
-Blockers: Encoding issues, column mismatches.
+Learnt: Memory limits of Pandas at large scale.
+Built: Initial matching script.
+Blockers: OOM crashes.
+Next: Chunk-based processing.
 
-Next Steps: Clean and normalize holiday dataset.
+Date: 2025-12-14
 
- Date: 11/20/2025
+Learnt: Streaming ETL patterns.
+Built: Incremental CSV writing.
+Next: Full pipeline run.
 
-What I learnt today: Handling CSV encoding issues and Pandas data cleaning pitfalls.
+Date: 2025-12-15
 
-What I built/tested today: Fixed loader script; validated holiday table schema.
+Learnt: Running full-scale ETL pipelines.
+Built: Generated ~76M holiday–menu matches.
+Next: Analytics.
 
-Blockers: Pandas .str misuse on DataFrame.
+Date: 2025-12-16
 
-Next Steps: Generate holiday keywords.
+Learnt: Scalable analytics on tens of millions of rows.
+Built: Holiday popularity analytics pipeline.
+Next: Dashboard metrics.
 
- Date: 11/27/2025
+Date: 2025-12-17
 
-What I learnt today: Keyword engineering for NLP-style matching.
+Learnt: How FastAPI apps load in Uvicorn; Python imports.
+Built: /health, /holidays/upcoming endpoints.
+Blockers: ASGI app loading issues.
+Next: Analytics endpoints.
 
-What I built/tested today: Created generate_holiday_keywords.py.
+Date: 2025-12-19
 
-Blockers: None.
+Learnt: Connecting React frontend to FastAPI backend.
+Built: MVP dashboard showing upcoming holidays.
+Next: Holiday of the Day card.
 
-Next Steps: Match holidays to menu items.
+Date: 2025-12-21
 
- Date: 12/04/2025
+Learnt: CORS, API contracts, MVP scoping.
+Built: End-to-end CSV → API → UI flow.
+Next: Shift focus from UI-first to insights-first.
 
-What I learnt today: Memory limits of Pandas at tens of millions of rows.
+Date: 2026-02-10
 
-What I built/tested today: Initial holiday-to-menu matching script.
+Learnt: How to design a real inference engine (baseline, momentum, confidence, action window).
+Built:
 
-Blockers: Out-of-memory crashes.
+Baseline Service
 
-Next Steps: Refactor to chunk-based processing.
+Momentum Service
 
- Date: 12/14/2025
+Confidence Service
 
-What I learnt today: Streaming ETL patterns and incremental file writes.
+Action Window Service
 
-What I built/tested today: Refactored matching pipeline to write CSV incrementally.
+/pulse/trends end-to-end inference pipeline
+Blockers: Python env issues (resolved).
+Next: Platform Bias Engine + crawler data contract.
 
-Blockers: Performance tuning.
+🧠 Inference Engine v1 — COMPLETED (10 Feb 2026)
 
-Next Steps: Complete full run and validate output.
+Baseline (abnormality vs norm)
 
- Date: 12/15/2025
+Momentum (trend phase detection)
 
-What I learnt today: End-to-end data pipeline execution at scale.
+Confidence (risk-aware decision score)
 
-What I built/tested today: Successfully generated ~76M holiday–menu matches.
+Action Window (time-to-act + urgency)
 
-Blockers: None (long runtime expected).
-
-Next Steps: Start analytics (Phase 2).
-
- Date: 12/16/2025
-
-* What I learnt today:
-- How to compute scalable analytics on tens of millions of rows using chunked processing
-- How real-world “popularity scores” are derived for product dashboards
-
-* What I built/tested today:
-- Holiday popularity analytics pipeline
-- Generated `holiday_popularity.csv` with normalized 0–100 popularity scores
-- Started computing top dishes per holiday (long-running job)
-
-* Blockers:
-- Long execution time due to large dataset (expected, not an issue)
-
-* Next Steps:
-- Complete top dishes per holiday analytics
-- Use results for dashboard metrics
-(keep remaining dates as-is)
-
-Date: 12/17/2025
-
-* What I learnt today:
-    Learned how FastAPI apps are discovered by Uvicorn, how Python module imports work in real projects, and how to debug ASGI app loading issues.
-
-* What I built/tested today:
-Successfully created and ran the first FastAPI service (`src/api/main.py`) with live endpoints:
-`/`, `/health`, and `/holidays/upcoming`.
-
-* Blockers:
-API initially failed due to missing `app` object being exported from the module.
-
-* Next Steps:
-Expose analytics-driven endpoints (holiday popularity, top dishes per holiday) and connect them to the API.
-
-Date: 12/18/2025
-
-  * What I learnt today:
-    Learned how FastAPI apps are discovered by Uvicorn, how Python module imports work in real projects, and how to debug ASGI app loading issues.
-
-  * What I built/tested today:
-    Successfully created and ran the first FastAPI service (`src/api/main.py`) with live endpoints:
-    `/`, `/health`, and `/holidays/upcoming`.
-
-  * Blockers:
-    API initially failed due to missing `app` object being exported from the module.
-
-  * Next Steps:
-    Expose analytics-driven endpoints (holiday popularity, top dishes per holiday) and connect them to the API.
-
-Date: 12/19/2025s
-
-- What I learnt today:
-  How to connect a React frontend to a FastAPI backend using fetch.
-
-- What I built/tested today:
-  Successfully displayed real upcoming food holidays in the MVP dashboard.
-
-- Blockers:
-  None.
-
-- Next Steps:
-  Connect “Holiday of the Day” and trending analytics.
-
-- Date: 12/20/2025
-  - Fixed FastAPI startup error caused by missing app initialization.
-  - Properly defined FastAPI app instance.
-  - Backend endpoint now starts successfully.
-
-Date: 12/21/2025
-
-  * What I learnt today:
-    - How to connect a FastAPI backend with a React (Vite) frontend.
-    - How CORS issues arise when frontend and backend run on different ports.
-    - How API contracts (JSON shape) directly affect frontend rendering.
-    - How an MVP should be minimal and focused, not over-engineered.
-
-  * What I built/tested today:
-    - Successfully exposed `/holidays/upcoming` API from FastAPI.
-    - Verified backend reads from `food_holidays_static.csv`.
-    - Built a React frontend that fetches upcoming holidays.
-    - Rendered upcoming holidays dynamically in the UI.
-    - Fixed multiple backend errors (missing imports, incorrect paths, table assumptions).
-    - Confirmed end-to-end data flow: CSV → API → UI.
-
-  * Blockers:
-    - Initial CORS errors between frontend (5173) and backend (8000).
-    - Path/import errors in FastAPI (`Path`, `app` not defined).
-    - Confusion due to backend being run from the wrong directory at times.
-
-  * Next Steps:
-    - Add “Dish of the Day” card (Step 3 – Part 1).
-    - Keep it static first (mock data) to finalize UI layout.
-
-
-🎯 Where you are NOW (very clearly)
-
-✅ Foundation — done
-
-✅ Data engineering — done
-
-🟡 Phase 2 Analytics — STARTING NOW
-
-⏳ Dashboard / Web / Mobile — coming next
+Unified /pulse/trends endpoint with mock social pipeline
