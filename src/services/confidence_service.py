@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 
 
 def compute_confidence_score(
@@ -6,6 +6,7 @@ def compute_confidence_score(
     momentum_state: str,
     signal_agreement: float = 1.0,
     context_confirmation: float = 0.0,
+    platform_leader: Optional[str] = None,
 ) -> Dict:
     """
     Computes overall confidence score for a trend.
@@ -14,6 +15,7 @@ def compute_confidence_score(
     momentum_state: EMERGING / PEAKING / FATIGUED / FLAT
     signal_agreement: 0 to 1 (how consistent signals are across platforms)
     context_confirmation: 0 to 1 (holiday, Google Trends, news etc.)
+    platform_leader: optional ("tiktok", "instagram", "youtube", "both", "unknown")
     """
 
     # Normalize deviation into 0–1 band
@@ -52,7 +54,8 @@ def compute_confidence_score(
         signal_agreement,
         context_confirmation,
         confidence,
-        risk
+        risk,
+        platform_leader
     )
 
     return {
@@ -68,10 +71,12 @@ def generate_explanation(
     signal_agreement: float,
     context_confirmation: float,
     confidence: float,
-    risk: str
+    risk: str,
+    platform_leader: Optional[str] = None,
 ) -> str:
     parts = []
 
+    # Baseline deviation explanation
     if deviation_score > 2:
         parts.append("Buzz is significantly above normal baseline")
     elif deviation_score > 1:
@@ -79,6 +84,7 @@ def generate_explanation(
     else:
         parts.append("Buzz is close to normal levels")
 
+    # Momentum explanation
     if momentum_state == "EMERGING":
         parts.append("Momentum is building rapidly (early trend phase)")
     elif momentum_state == "PEAKING":
@@ -88,13 +94,28 @@ def generate_explanation(
     else:
         parts.append("Trend momentum is flat")
 
-    if signal_agreement > 0.7:
-        parts.append("Multiple signals agree across platforms")
-    elif signal_agreement < 0.4:
-        parts.append("Signals are inconsistent across platforms")
+    # Cross-platform agreement explanation
+    if signal_agreement >= 0.75:
+        parts.append("Signals strongly align across platforms")
+    elif signal_agreement >= 0.55:
+        parts.append("Signals are moderately aligned across platforms")
+    else:
+        parts.append("Signals diverge across platforms, reducing confidence")
 
+    # Platform leader explanation (optional)
+    if platform_leader:
+        if platform_leader == "both":
+            parts.append("Momentum is similar across platforms")
+        elif platform_leader == "unknown":
+            pass
+        else:
+            parts.append(f"{platform_leader.capitalize()} is leading this trend")
+
+    # Context explanation
     if context_confirmation > 0.5:
         parts.append("Context signals support this trend (e.g., holiday/event)")
+    else:
+        parts.append("Context signals provide limited support for this trend")
 
     parts.append(f"Overall confidence: {confidence} (Risk: {risk})")
 

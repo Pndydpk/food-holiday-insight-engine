@@ -14,6 +14,14 @@ from src.services.baseline_service import compute_baseline_and_deviation
 from src.services.momentum_service import compute_momentum
 from src.services.confidence_service import compute_confidence_score
 from src.services.action_window_service import estimate_action_window
+from src.services.platform_bias_service import run_platform_bias_engine
+from src.services.social_ingestion_service import (
+    ingest_mock_social_signals,
+    aggregate_to_trend_signal,
+    social_signals_to_series,
+    compute_platform_signal_agreement,
+    detect_platform_leader,
+)
 
 app = FastAPI(title="FoodLens API", version="0.1.0")
 
@@ -118,25 +126,48 @@ def debug_confidence():
         deviation_score=2.6,
         momentum_state="EMERGING",
         signal_agreement=0.8,
-        context_confirmation=0.6
+        context_confirmation=0.6,
+        platform_leader="tiktok",
     )
 
 
 # -------------------------
-# THE PULSE (Mock Pipeline)
+# THE PULSE (Unified Intelligence Endpoint)
 # -------------------------
 @app.get("/pulse/trends")
-def pulse_trends():
-    trends = generate_mock_trends()
+def pulse_trends(source: str = Query(default="mock")):
     insights = []
 
+    # --- Ingestion ---
+    if source == "social":
+        social_signals = ingest_mock_social_signals()
+        trend_signals = aggregate_to_trend_signal(social_signals)
+
+        trends = [
+            {
+                "entity": t.trend,
+                "category": "Social Trend",
+                "spike": True,
+                "holiday_soon": False,  # social trends not tied to holidays (v1)
+            }
+            for t in trend_signals
+        ]
+    else:
+        social_signals = None
+        trends = generate_mock_trends()
+
+    # --- Inference Loop ---
     for t in trends:
-        # 1) Mock social buzz (e.g., TikTok/IG combined signal)
-        series = generate_mock_social_series(
-            days=14,
-            base=100,
-            spike=t.get("spike", True)
-        )
+
+        # 1) Time series
+        if source == "social":
+            series = social_signals_to_series(social_signals, days=14)
+        else:
+            series = generate_mock_social_series(
+                days=14,
+                base=100,
+                spike=t.get("spike", True)
+            )
 
         # 2) Baseline vs current
         history = series[:-1]
@@ -146,21 +177,31 @@ def pulse_trends():
         # 3) Momentum
         momentum = compute_momentum(series)
 
-        # 4) Mock signal agreement (later from multi-platform)
-        signal_agreement = 0.8 if t["holiday_soon"] else 0.5
+        # 4) Signal agreement
+        if source == "social":
+            signal_agreement = compute_platform_signal_agreement(social_signals)
+        else:
+            signal_agreement = 0.8 if t["holiday_soon"] else 0.5
 
-        # 5) Context confirmation (holiday proximity)
+        # 5) Context confirmation
         context_confirmation = 1.0 if t["holiday_soon"] else 0.2
 
-        # 6) Confidence
+        # 6) Platform leader
+        if source == "social":
+            platform_leader = detect_platform_leader(social_signals)
+        else:
+            platform_leader = None
+
+        # 7) Confidence
         confidence = compute_confidence_score(
             deviation_score=baseline_result["deviation_score"],
             momentum_state=momentum["momentum_state"],
             signal_agreement=signal_agreement,
             context_confirmation=context_confirmation,
+            platform_leader=platform_leader,
         )
 
-        # 7) Action window
+        # 8) Action window
         action_window = estimate_action_window(
             momentum_state=momentum["momentum_state"],
             velocity=momentum["velocity"],
@@ -168,7 +209,7 @@ def pulse_trends():
             deviation_score=baseline_result["deviation_score"],
         )
 
-        # 8) Action hint (smarter logic)
+        # 9) Action hint
         if confidence["confidence_score"] > 0.8 and momentum["momentum_state"] == "EMERGING":
             action_hint = "Launch promotion (early window)"
         elif confidence["confidence_score"] > 0.6 and momentum["momentum_state"] == "PEAKING":
@@ -178,10 +219,17 @@ def pulse_trends():
         else:
             action_hint = "Monitor"
 
+        # 10) Platform bias
+        platform_bias = run_platform_bias_engine({
+            "momentum_state": momentum["momentum_state"],
+            "velocity": momentum["velocity"],
+            "confidence_score": confidence["confidence_score"],
+        })
+
         insights.append({
             "entity": t["entity"],
             "category": t["category"],
-            "series": series,  # for debugging/visuals
+            "series": series,
             "baseline": baseline_result["baseline"],
             "current_value": current_value,
             "deviation_score": baseline_result["deviation_score"],
@@ -195,9 +243,34 @@ def pulse_trends():
             "action_window_hours": action_window["action_window_hours"],
             "urgency": action_window["urgency"],
             "window_explanation": action_window["window_explanation"],
+            "platform_bias": platform_bias,
         })
 
     return {
-        "pulse_generated_at": "mock",
+        "pulse_generated_at": source,
         "insights": insights
+    }
+# -------------------------
+# DEBUG: Pulse Internals (Social Ingestion & Platform Signals)
+# -------------------------
+@app.get("/pulse/debug")
+def pulse_debug():
+    social_signals = ingest_mock_social_signals()
+
+    platform_velocity = None
+    signal_agreement = None
+    platform_leader = None
+
+    if social_signals:
+        from src.services.social_ingestion_service import compute_platform_momentum
+
+        platform_velocity = compute_platform_momentum(social_signals)
+        signal_agreement = compute_platform_signal_agreement(social_signals)
+        platform_leader = detect_platform_leader(social_signals)
+
+    return {
+        "raw_social_signals": [s.dict() for s in social_signals],
+        "platform_velocity": platform_velocity,
+        "signal_agreement": signal_agreement,
+        "platform_leader": platform_leader,
     }
