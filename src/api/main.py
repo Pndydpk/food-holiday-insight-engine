@@ -16,12 +16,13 @@ from src.services.confidence_service import compute_confidence_score
 from src.services.action_window_service import estimate_action_window
 from src.services.platform_bias_service import run_platform_bias_engine
 from src.services.social_ingestion_service import (
-    ingest_mock_social_signals,
+    ingest_social_signals,
     aggregate_to_trend_signal,
     social_signals_to_series,
     compute_platform_signal_agreement,
     detect_platform_leader,
 )
+from src.services.social_ingestion_service import fetch_recent_raw_social_signals
 
 app = FastAPI(title="FoodLens API", version="0.1.0")
 
@@ -140,8 +141,9 @@ def pulse_trends(source: str = Query(default="mock")):
 
     # --- Ingestion ---
     if source == "social":
-        social_signals = ingest_mock_social_signals()
+        social_signals = ingest_social_signals()
         trend_signals = aggregate_to_trend_signal(social_signals)
+
 
         trends = [
             {
@@ -161,7 +163,8 @@ def pulse_trends(source: str = Query(default="mock")):
 
         # 1) Time series
         if source == "social":
-            series = social_signals_to_series(social_signals, days=14)
+            from src.services.social_ingestion_service import build_entity_time_series_from_db
+            series = build_entity_time_series_from_db(t["entity"], days=14)
         else:
             series = generate_mock_social_series(
                 days=14,
@@ -255,8 +258,7 @@ def pulse_trends(source: str = Query(default="mock")):
 # -------------------------
 @app.get("/pulse/debug")
 def pulse_debug():
-    social_signals = ingest_mock_social_signals()
-
+    social_signals = ingest_social_signals()
     platform_velocity = None
     signal_agreement = None
     platform_leader = None
@@ -273,4 +275,12 @@ def pulse_debug():
         "platform_velocity": platform_velocity,
         "signal_agreement": signal_agreement,
         "platform_leader": platform_leader,
+    }
+
+@app.get("/debug/social/raw")
+def debug_raw_social(limit: int = 10):
+    rows = fetch_recent_raw_social_signals(limit=limit)
+    return {
+        "count": len(rows),
+        "rows": rows
     }

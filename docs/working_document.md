@@ -221,3 +221,73 @@ Confidence (risk-aware decision score)
 Action Window (time-to-act + urgency)
 
 Unified /pulse/trends endpoint with mock social pipeline
+
+## ✅ Current Status (FoodLens Brain – v1) 11 Feb 2026
+
+### What is built
+- Unified /pulse/trends endpoint (mock + social source switch)
+- Baseline deviation engine
+- Momentum engine (velocity + acceleration + phase)
+- Confidence engine (risk-aware, explainable)
+- Action window estimation
+- Platform Bias Engine (Uber Eats vs DoorDash vs Retail)
+- Social ingestion pipeline (mock for TikTok, Instagram, YouTube)
+- Social → Trend aggregation layer
+- Social-derived time series adapter
+- Multi-platform signal agreement (divergence-aware)
+- Platform leader detection (TikTok / Instagram / YouTube / both)
+- Debug endpoint: /pulse/debug to inspect raw social signals & platform momentum
+
+### Key Product Philosophy
+- UI is thin client
+- Backend inference engine is the core product
+- Directional accuracy > perfect prediction
+- Explainability is first-class (confidence explanations, platform leader)
+
+### Open Questions / Next Phase
+- How to design scalable social data ingestion (scraping vs third-party tools)
+- How to persist social signals into a database
+- Whether to build full data engineering pipeline now vs MVP-first approach
+- Schema design for social_signal, trend_signal, platform_signal tables
+- Batch vs streaming ingestion (cron vs pub/sub)
+- Cost-effective alternatives to official APIs (Instagram, TikTok)
+
+## Current Status (FoodLens Brain – v1) — 15 Feb 2026
+
+What is built
+- /pulse/trends unified endpoint (mock + social)
+- Baseline deviation engine
+- Momentum engine (velocity, acceleration, phase)
+- Confidence engine (risk-aware, explainable)
+- Action window estimation
+- Platform Bias Engine (Uber Eats, DoorDash, Retail)
+- Social ingestion pipeline (pluggable dummy sources: TikTok, Instagram, YouTube)
+- Social to Trend aggregation layer
+- Social-derived time series adapter
+- Multi-platform signal agreement
+- Platform leader detection
+- Debug endpoint: /pulse/debug
+
+New Additions (15 Feb 2026)
+- Raw social signals persisted in SQLite (system has memory)
+- DB init script (init_db.py)
+- Ingestion writes social data to DB
+- Debug endpoint to view stored social data (/debug/social/raw)
+- Time series now built from DB history (not just synthetic)
+- Backdated ingestion simulation to create realistic trend spikes
+- End-to-end pipeline validated: ingestion → DB → time series → momentum → confidence → platform bias
+
+Product Philosophy
+- UI is thin client
+- Backend inference engine is the core product
+- Directional accuracy over perfect prediction
+- Explainability is first-class
+- MVP-first data engineering (simulate before real crawlers/APIs)
+
+Next Phase (Open Questions)
+- Real social ingestion (scrapers, APIs, third-party tools)
+- Schema evolution for raw_social_signals and trend tables
+- Batch vs streaming ingestion
+- Data freshness penalties in confidence engine
+- Trend lifecycle modeling (emerging to peaking to fatigued)
+- Deployment plan for TikTok ban workaround
