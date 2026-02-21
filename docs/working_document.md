@@ -268,7 +268,7 @@ What is built
 - Platform leader detection
 - Debug endpoint: /pulse/debug
 
-New Additions (15 Feb 2026)
+New Additions (21 Feb 2026)
 - Raw social signals persisted in SQLite (system has memory)
 - DB init script (init_db.py)
 - Ingestion writes social data to DB
@@ -276,6 +276,8 @@ New Additions (15 Feb 2026)
 - Time series now built from DB history (not just synthetic)
 - Backdated ingestion simulation to create realistic trend spikes
 - End-to-end pipeline validated: ingestion → DB → time series → momentum → confidence → platform bias
+- Repo structure refactored: backend/ and frontend/ separation for cleaner architecture
+- Frontend UI moved under frontend/ (prep for GitHub Pages / static hosting)
 
 Product Philosophy
 - UI is thin client
