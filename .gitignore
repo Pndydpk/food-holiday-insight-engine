@@ -23,18 +23,21 @@ Thumbs.db
 # Jupyter checkpoints
 .ipynb_checkpoints/
 
+# Local databases
+*.db
+
 # ===== PROJECT DATA RULES =====
 
 # Ignore entire data directory EXCEPT specific small files
 data/raw/*
 data/processed/*
 
-# Allow only this CSV (your static holiday list)
+# Allow only this CSV (static holiday list)
 !data/raw/food_holidays_static.csv
 
 # Ignore all other CSVs
 *.csv
-!data/raw/food_holidays_static.csv   # keep this one
+!data/raw/food_holidays_static.csv
 
 # Secrets
 *.env
