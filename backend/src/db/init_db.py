@@ -15,16 +15,18 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         platform TEXT,
         post_id TEXT,
-        timestamp TEXT,
+        posted_at TEXT,
         text TEXT,
         hashtags TEXT,
         food_entities TEXT,
         likes INTEGER,
         comments INTEGER,
         shares INTEGER,
+        views INTEGER,
         creator_followers INTEGER,
         geo TEXT,
-        ingested_at TEXT
+        ingested_at TEXT,
+        raw_payload TEXT
     )
     """)
 

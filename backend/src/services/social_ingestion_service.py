@@ -84,30 +84,31 @@ def save_raw_social_signals(signals: List[SocialSignal]):
 
         cursor.execute("""
             INSERT INTO raw_social_signals (
-                platform, post_id, timestamp, text,
+                platform, post_id, posted_at, text,
                 hashtags, food_entities,
-                likes, comments, shares,
-                creator_followers, geo, ingested_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                likes, comments, shares, views,
+                creator_followers, geo, ingested_at,
+                raw_payload
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             s.platform,
             s.post_id,
-            s.timestamp,
+            s.timestamp,  # assuming s.timestamp is the post time
             s.text,
             json.dumps(s.hashtags),
             json.dumps(s.food_entities),
             s.engagement.get("likes", 0),
             s.engagement.get("comments", 0),
             s.engagement.get("shares", 0),
+            s.engagement.get("views", 0),   # 👈 new
             s.creator_followers,
             s.geo,
-            backdated_time.isoformat()   # 👈 now spreads across days
+            backdated_time.isoformat(),     # 👈 ingestion time (simulated)
+            json.dumps(s.dict())            # 👈 store full raw object
         ))
 
     conn.commit()
     conn.close()
-
-
 # -------------------------
 # Aggregation + Adapters (Existing Logic)
 # -------------------------
