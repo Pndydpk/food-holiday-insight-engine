@@ -1,0 +1,113 @@
+/* --- Global & Reset --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #06090f; color: #fff; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+
+/* --- 1. HEADER (LOCKED & SIDE-BY-SIDE) --- */
+.main-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px 50px; 
+    background: rgba(6, 9, 15, 0.95);
+    backdrop-filter: blur(15px); 
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+.nav-logo { height: 45px; filter: drop-shadow(0 0 8px #4CAF50); }
+.logo-text { font-size: 1.8rem; font-weight: 900; text-shadow: 0 0 10px #ffcc33, 0 0 20px #ff007a; }
+
+.live-clock { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-right: 20px; font-family: monospace; }
+
+/* --- CONTACT US BUTTON --- */
+.contact-btn {
+    background: transparent; 
+    border: 1px solid #ff007a; 
+    color: #fff;
+    padding: 8px 18px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-weight: bold;
+    transition: all 0.2s ease; /* Makes the transition smooth */
+}
+
+/* This triggers when the mouse is over the button */
+.contact-btn:hover {
+    background-color: #ff007a;
+    box-shadow: 0 0 15px #ff007a;
+    /* We can remove the scale(0.95) so it doesn't shrink until clicked */
+    transform: scale(1.05); /* Optional: makes it grow slightly instead! */
+}
+
+/* --- 2. DASHBOARD GRID & HERO --- */
+.dashboard-container {
+    padding-top: 120px;
+    min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 30px; width: 90%; max-width: 1400px;
+}
+
+.hero-card {
+    position: relative;
+    display: flex; flex-direction: column; justify-content: space-between; 
+    min-height: 500px; padding: 40px; border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: linear-gradient(rgba(6, 9, 15, 0.4), rgba(6, 9, 15, 0.8)), 
+                url('https://images.unsplash.com/photo-1613919113166-714073347895?q=80&w=2070');
+    background-size: cover;
+    background-position: center;
+}
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 2; }
+
+/* Calendar Box */
+.calendar-box {
+    border: 2px solid #ff007a; border-radius: 12px; padding: 10px; text-align: center; width: 70px;
+    background: rgba(0,0,0,0.5); /* Makes text readable over background image */
+}
+.cal-month { display: block; font-size: 0.7rem; color: #ff007a; font-weight: bold; }
+.cal-day { font-size: 1.8rem; font-weight: 900; }
+
+.ai-badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
+
+.hero-main-content { z-index: 2; }
+.hero-headline { font-size: 4.5rem; line-height: 1; margin: 20px 0; font-weight: 900; }
+.hero-desc { color: rgba(255,255,255,0.9); font-size: 1.1rem; max-width: 80%; text-shadow: 1px 1px 5px #000; }
+
+.action-btn {
+    background: #ff007a; color: #fff; border: none; padding: 15px 30px; 
+    border-radius: 12px; font-weight: bold; width: fit-content; margin-top: 20px; cursor: pointer;
+    z-index: 2;
+}
+
+/* --- 4. METRIC CARDS (GLASS EFFECT) --- */
+.metrics-sidebar { display: flex; flex-direction: column; gap: 20px; }
+.metric-card { 
+    background: rgba(255, 255, 255, 0.08); 
+    backdrop-filter: blur(25px); 
+    border-radius: 30px; 
+    padding: 30px; 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.label { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+.value { font-size: 2.5rem; font-weight: 800; display: block; }
+
+.green-glow { border-left: 6px solid #4CAF50; box-shadow: -10px 0 20px rgba(76, 175, 80, 0.1); }
+.gold-glow { border-left: 6px solid #ffcc33; box-shadow: -10px 0 20px rgba(255, 204, 51, 0.1); }
+.pink-glow { border-left: 6px solid #ff007a; box-shadow: -10px 0 20px rgba(255, 0, 122, 0.1); }
+.pink-text { color: #ff007a; text-shadow: 0 0 10px #ff007a; }
